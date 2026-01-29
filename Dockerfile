@@ -80,7 +80,7 @@ RUN npm install -g vercel @marp-team/marp-cli https://github.com/tobi/qmd && \
     hash -r
 
 # Configure QMD Persistence
-ENV XDG_CACHE_HOME="/home/node/.moltbot/cache"
+ENV XDG_CACHE_HOME="/root/.moltbot/cache"
 
 # Install Python Tools (IPython, Office Libs)
 # Use --break-system-packages because we are in a container/appliance
@@ -99,7 +99,7 @@ RUN ln -s /usr/bin/fdfind /usr/bin/fd || true && \
 WORKDIR /app
 
 # Set PATH for global npm binaries - standard location for root typically /usr/local, but we keep node's structure or just use global
-ENV PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/root/.bun/bin:/root/.moltbot/bin:/root/.claude/bin:/root/.kimi/bin"
+ENV PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/root/.bun/bin:/root/.moltbot/bin:/root/.claude/bin:/root/.kimi/bin:/root/.local/bin"
 
 # Run Moltbot install scripts as root
 ARG MOLT_BOT_BETA=false
