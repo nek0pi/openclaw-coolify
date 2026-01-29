@@ -48,7 +48,7 @@ services:
       # Bootstrap controls
       CLAWDBOT_AUTO_BOOTSTRAP: "1"
       CLAWDBOT_PRINT_ACCESS: "1"
-      GATEWAY_TRUSTED_PROXIES: '[*]'
+      GATEWAY_TRUSTED_PROXIES: '*'
       # Docker Socket Proxy
       DOCKER_HOST: tcp://docker-proxy:2375
       # Public URL Access
@@ -89,6 +89,7 @@ services:
       NETWORKS: 1   # Connect to networks
       INFO: 1       # Version check
       VERSION: 1
+      EXEC: 1       # Run commands (exec)
       EVENTS: 1     # Listen for events (if needed)
 
   qdrant:
