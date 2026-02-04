@@ -82,6 +82,9 @@ services:
     volumes:
       - openclaw-config:/root/.openclaw
       - openclaw-workspace:/root/openclaw-workspace
+      - local-config:/root/.local
+      - agents-skills-config:/root/.agents
+      - shared-config:/root/.config
 
 
       # Secure: Socket mount removed in favor of proxy
@@ -141,3 +144,6 @@ volumes:
   openclaw-workspace:
   searxng-data:
   registry-data:
+  local-config:
+  agents-skills-config:
+  shared-config:
