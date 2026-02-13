@@ -37,7 +37,7 @@ services:
       NPM_CONFIG_CACHE: /data/.npm
       BUN_INSTALL: /data/.bun
       # Map OpenClaw vars
-      OPENCLAW_GATEWAY_BIND: lan
+      OPENCLAW_GATEWAY_BIND: 0.0.0.0
       OPENCLAW_GATEWAY_PORT: ${OPENCLAW_GATEWAY_PORT:-18789}
       # Tell the binary where to look for state/config
       OPENCLAW_STATE_DIR: /data/.openclaw
