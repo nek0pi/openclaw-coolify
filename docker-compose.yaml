@@ -6,12 +6,16 @@ services:
       - registry-data:/var/lib/registry
     environment:
       REGISTRY_HTTP_SECRET: ${SERVICE_BASE64_REGISTRY}
+    networks:
+      - default
+
   openclaw:
     build:
       context: .
       args:
         - OPENCLAW_BETA=${OPENCLAW_BETA:-false}
     restart: on-failure:10
+    container_name: openclaw-gateway # Forces a simple name
     ulimits:
       nofile:
         soft: 65535
@@ -37,7 +41,7 @@ services:
       NPM_CONFIG_CACHE: /data/.npm
       BUN_INSTALL: /data/.bun
       # Map OpenClaw vars
-      OPENCLAW_GATEWAY_BIND: 0.0.0.0
+      OPENCLAW_GATEWAY_BIND: lan
       OPENCLAW_GATEWAY_PORT: ${OPENCLAW_GATEWAY_PORT:-18789}
       # Tell the binary where to look for state/config
       OPENCLAW_STATE_DIR: /data/.openclaw
@@ -92,7 +96,9 @@ services:
 
     depends_on:
       - docker-proxy
-
+    networks:
+      - default # To talk to proxy/searxng
+      - coolify # To talk to Mission Control
     command: ["bash", "/app/scripts/bootstrap.sh"]
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:18789/"]
@@ -116,6 +122,8 @@ services:
       VERSION: 1
       EXEC: 1       # Run commands (exec)
       EVENTS: 1     # Listen for events (if needed)
+    networks:
+      - default
 
   searxng:
     build:
@@ -133,6 +141,8 @@ services:
       - CHOWN
       - SETGID
       - SETUID
+    networks:
+      - default
 
 volumes:
   openclaw-data:
@@ -140,3 +150,9 @@ volumes:
   openclaw-workspace:
   searxng-data:
   registry-data:
+
+networks:
+  default: # Internal stack network
+    driver: bridge
+  coolify: # Shared external network for Mission Control
+    external: true
