@@ -99,6 +99,12 @@ services:
     networks:
       - default # To talk to proxy/searxng
       - coolify # To talk to Mission Control
+    labels:
+    - traefik.enable=true
+    # Use the magic variable so it never breaks if the ID changes
+    - "traefik.docker.network=${COOLIFY_RESOURCE_UUID}"
+    - "traefik.http.routers.openclaw.rule=Host(${SERVICE_URL_OPENCLAW})"
+    - "traefik.http.services.openclaw.loadbalancer.server.port=${OPENCLAW_GATEWAY_PORT}"
     command: ["bash", "/app/scripts/bootstrap.sh"]
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:18789/"]
@@ -155,4 +161,8 @@ networks:
   default: # Internal stack network
     driver: bridge
   coolify: # Shared external network for Mission Control
+    external: true
+    # Map the magic variable to a local name
+  service-network:
+    name: ${COOLIFY_RESOURCE_UUID}
     external: true
