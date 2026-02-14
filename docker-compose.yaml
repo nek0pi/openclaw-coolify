@@ -165,3 +165,7 @@ networks:
     driver: bridge
   coolify: # Shared external network for Mission Control
     external: true
+    # This is the critical "Safe" definition:
+  service-network:
+    name: ${COOLIFY_RESOURCE_UUID}
+    external: true  # <--- This prevents the 500 error conflict!
