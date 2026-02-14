@@ -165,7 +165,3 @@ networks:
     driver: bridge
   coolify: # Shared external network for Mission Control
     external: true
-    # Map the magic variable to a local name
-  service-network:
-    name: ${COOLIFY_RESOURCE_UUID}
-    external: true
