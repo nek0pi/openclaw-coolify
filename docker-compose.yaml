@@ -99,12 +99,15 @@ services:
     networks:
       - default # To talk to proxy/searxng
       - coolify # To talk to Mission Control
+      - service-network # This points to ${COOLIFY_RESOURCE_UUID}
     labels:
-    - traefik.enable=true
-    # Use the magic variable so it never breaks if the ID changes
-    - "traefik.docker.network=${COOLIFY_RESOURCE_UUID}"
-    - "traefik.http.routers.openclaw.rule=Host(${SERVICE_URL_OPENCLAW})"
-    - "traefik.http.services.openclaw.loadbalancer.server.port=${OPENCLAW_GATEWAY_PORT}"
+      - "traefik.enable=true"
+      # Tells Traefik which network to use to reach the container
+      - "traefik.docker.network=${COOLIFY_RESOURCE_UUID}"
+      # Corrected Host rule: Backticks and FQDN (domain only)
+      - "traefik.http.routers.openclaw.rule=Host(`${SERVICE_FQDN_OPENCLAW}`)"
+      # Explicitly mapping the loadbalancer port
+      - "traefik.http.services.openclaw.loadbalancer.server.port=18789"
     command: ["bash", "/app/scripts/bootstrap.sh"]
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:18789/"]
